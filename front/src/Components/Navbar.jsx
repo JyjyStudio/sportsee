@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import StyledLink from './StyledLink'
 import Img from './Img'
 import LogoNavbar from '../assets/logo-navbar.svg'
-import LittleCard from './LittleCard'
+import Card from './Card'
 import Yoga from '../assets/yoga.svg'
 import Piscine from '../assets/piscine.svg'
 import Velo from '../assets/velo.svg'
@@ -59,10 +59,12 @@ export default function Navbar() {
 					{leftNavbarItems.map((item, id) => (
 						<li key={`${id}${item.path}`}>
 							<StyledLink color="red" to={item.path}>
-								<LittleCard
+								<Card
 									imgSrc={item.imgSrc}
-									$bgColor="#fff"
+									bgColor="#fff"
 									label={item.path}
+									width="52px"
+									height="52px"
 								/>
 							</StyledLink>
 						</li>
