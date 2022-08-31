@@ -26,7 +26,7 @@ export default function Navbar() {
 	]
 	return (
 		<>
-			<Nav height="80px" bgColor="#000" padding="0 30px">
+			<Nav height="70px" bgColor="#000" padding="0 30px">
 				<NavList justifyContent="space-between" height="100%">
 					{topNavbarItems.map((item, id) => (
 						<li key={`${id}-${item.label}`}>
@@ -34,6 +34,7 @@ export default function Navbar() {
 								{item.imgSrc ? (
 									<Img
 										src={item.imgSrc}
+										width="150px"
 										alt="sportsee-logo"
 									/>
 								) : (
@@ -45,8 +46,8 @@ export default function Navbar() {
 				</NavList>
 			</Nav>
 			<Nav
-				width="100px"
-				height="calc(100vh - 80px)"
+				width="90px"
+				height="calc(100vh - 70px)"
 				bgColor="#000"
 				float="left"
 				justifyContent="center"
@@ -63,8 +64,8 @@ export default function Navbar() {
 									imgSrc={item.imgSrc}
 									bgColor="#fff"
 									label={item.path}
-									width="52px"
-									height="52px"
+									width="50px"
+									height="50px"
 								/>
 							</StyledLink>
 						</li>
