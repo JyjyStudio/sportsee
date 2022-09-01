@@ -1,28 +1,35 @@
 import * as d3 from "d3"
 import { useEffect, useRef } from "react"
-import { useParams } from "react-router-dom"
-import data from "../../data/data"
+import useViewport from '../../utils/Hooks/useViewport'
 
-export default function BarChart({userWeight, userCalories, svgWidth, svgHeight}) {
+export default function BarChart({data, svgHeight}) {
 
-	const params = useParams()
-	const id = parseInt(params.id)
-	const d3ChartRef = useRef()
+	//svg parent ref
+	const chartContainerRef = useRef()
+	//ref for resize event
+	const update = useRef(false)
+	//responsive width
+	const { viewportWidth } = useViewport()
 
-	const USER_ACTIVITY = data.USER_ACTIVITY.filter(data => data.userId === id)[0]
-	const sessions = USER_ACTIVITY.sessions
-	console.log(sessions);
-	
 	useEffect(() => {
-
-		const margin = {top: 50, right: 20, bottom: 20, left: 20}
-		const graphWidth = parseInt(d3.select(d3ChartRef.current).style('width')) - margin.left - margin.right
-		const graphHeight = parseInt(d3.select(d3ChartRef.current).style('height')) - margin.top - margin.bottom
 		
-		// clean old chart
-		d3.selectAll('svg').remove();
-		// create new one
-		const svg = d3.select(d3ChartRef.current)
+		//if resize remove the previous chart
+		update.current ? d3.selectAll('svg').remove() : update.current = true
+		// re-draw the chart with new dimensions after resize 
+		DrawChart(data)
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data, viewportWidth])
+
+	const margin = {top: 50, right: 10, bottom: 20, left: 30}
+	
+	const DrawChart = (data) => {
+
+		const graphWidth = parseInt(viewportWidth/2) - margin.left - margin.right
+		const graphHeight = parseInt(d3.select(chartContainerRef.current).style('height')) - margin.top - margin.bottom
+		
+		// create new chart
+		const svg = d3.select(chartContainerRef.current)
 			.append('svg')
 			.attr('width', graphWidth + margin.left + margin.right)
 			.attr('height', graphHeight + margin.top + margin.bottom)
@@ -34,46 +41,51 @@ export default function BarChart({userWeight, userCalories, svgWidth, svgHeight}
 			.attr("x", margin.left)
 			.attr("y", 30)
 			.text('Activité quotidienne')
-		// X axis
-		const xScale = d3.scaleBand()
-			.domain(sessions.map(date => new Date(date.day).getDate()))
-			.range([margin.left, graphWidth])
-			// .paddingInner(.94)
-			// .paddingOuter(.3)
-			// .align(0)
 
-		const axisX = d3.axisBottom(xScale)
-			.tickSizeOuter([0])
-			.tickSizeInner([0])
+		// X axis
+		const x_Scale = d3.scaleBand()
+			.domain(data.map(date => new Date(date.day).getDate()))
+			.range([margin.left, graphWidth])
+
+		const x_Axis = d3.axisBottom(x_Scale)
+			.tickSize(0)
 			.tickPadding([margin.bottom])
 
 		svg.append('g')
-			.attr('transform', `translate(0, ${graphHeight})`)
-			.style("font-size", "1rem")
-			.call(axisX)			
+			.call(x_Axis)
+			.attr('transform', `translate(0, ${graphHeight + margin.bottom})`)
+			.attr("font-size", "1rem")
+			.selectAll('text')
+			.attr('transform', `translate(${-margin.left}, 0)`)
+			.attr('text-anchor', 'end') //regler la position des ticks de l'axe des x
 
 		// Y axis
-		const max = d3.max(sessions, (d) => d.kilogram)
+		const max_weight = d3.max(data, d => d.kilogram)
+		const max_calories = d3.max(data, d => d.calories)
 
-		const yScale = d3.scaleLinear()
-					.domain([max-12, max+3])
-					.range([graphHeight, margin.bottom]) // a revoir
+		const y_Weight_Scale = d3.scaleLinear()
+			.domain([max_weight-12, max_weight+3])
+			.range([graphHeight, margin.bottom])
+			
+		const y_Calories_Scale = d3.scaleLinear()
+			.domain([0, max_calories])
+			.range([0, graphHeight - margin.top - margin.bottom])
 
-		const axisY = d3.axisRight(yScale)
+		const y_Axis = d3.axisRight(y_Weight_Scale)
 			.ticks(3)
 			.tickSizeOuter([0])
 			.tickSizeInner([0])
 			.tickPadding([margin.right])
 
 		svg.append('g')
-			.call(axisY)
+			.call(y_Axis)
 			.attr('transform', `translate(${graphWidth - margin.right}, 0)`)
-			.style("font-size", "1rem")
+			.attr("font-size", "1rem")
 			.select('.domain').remove()
 
 		//grille
-		const gridTickValues = axisY.scale().ticks(3).slice(1)
-		const yAxisGrid = d3.axisLeft(yScale)
+		const gridTickValues = y_Axis.scale().ticks(3).slice(1)
+		const yAxisGrid = d3.axisLeft(y_Weight_Scale)
 			.tickSize(graphWidth - margin.left - margin.right)
 			.tickFormat('')
 			.tickValues(gridTickValues)
@@ -85,36 +97,61 @@ export default function BarChart({userWeight, userCalories, svgWidth, svgHeight}
 			.select('path').remove()
 
 		//data
-
-		//rounded weight line
+		//rounded weight line 
 		svg.append('g')
 			.selectAll('line')
-			.data(sessions)
+			.data(data)
 			.enter()
 			.append('line')
-			.attr('x1', d => xScale(new Date(d.day).getDate()) + margin.top)
-			.attr('x2', d => xScale(new Date(d.day).getDate()) + margin.top)
-			.attr('y1', d => graphHeight - margin.bottom)
-			.attr('y2', d => yScale(d.kilogram)+3)
+			.attr('x1', d => x_Scale(new Date(d.day).getDate()) + 18) //décalage de 18px sur la droite par rapport a la ligne des calories
+			.attr('x2', d => x_Scale(new Date(d.day).getDate()) + 18)
+			.attr('y1', d => graphHeight + margin.bottom - 5)
+			.attr('y2', d => y_Weight_Scale(d.kilogram) + 3)
 			.attr( 'stroke', "#E60000")
 			.attr('stroke-width', "8")
 			.attr('stroke-linecap',"round")
 		// rect weight line
 		svg.append('g')
 			.selectAll('line')
-			.data(sessions)
+			.data(data)
 			.enter()
 			.append('line')
-			.attr('x1', d => xScale(new Date(d.day).getDate()) + margin.top)
-			.attr('x2', d => xScale(new Date(d.day).getDate()) + margin.top)
-			.attr('y1', d => graphHeight)
-			.attr('y2', d => yScale(d.kilogram)+3)
+			.attr('x1', d => x_Scale(new Date(d.day).getDate()) + 18)
+			.attr('x2', d => x_Scale(new Date(d.day).getDate()) + 18)
+			.attr('y1', d => graphHeight + margin.bottom)
+			.attr('y2', d => y_Weight_Scale(d.kilogram)+3)
 			.attr( 'stroke', "#E60000")
 			.attr('stroke-width', "8")
 			.attr('stroke-linecap',"butt")
+		//rounded calories line
+		svg.append('g')
+			.selectAll('line')
+			.data(data)
+			.enter()
+			.append('line')
+			.attr('x1', d => x_Scale(new Date(d.day).getDate()) + 4)
+			.attr('x2', d => x_Scale(new Date(d.day).getDate()) + 4)
+			.attr('y1', d => graphHeight + margin.bottom - 5)
+			.attr('y2', d => graphHeight - y_Calories_Scale(d.calories))
+			.attr( 'stroke', "black")
+			.attr('stroke-width', "8")
+			.attr('stroke-linecap',"round")
+		//rect calories line
+		svg.append('g')
+			.selectAll('line')
+			.data(data)
+			.enter()
+			.append('line')
+			.attr('x1', d => x_Scale(new Date(d.day).getDate()) + 4)
+			.attr('x2', d => x_Scale(new Date(d.day).getDate()) + 4)
+			.attr('y1', d => graphHeight + margin.bottom)
+			.attr('y2', d => graphHeight - y_Calories_Scale(d.calories))
+			.attr( 'stroke', "black")
+			.attr('stroke-width', "8")
+			.attr('stroke-linecap',"butt")
+	}
+	console.log(viewportWidth);
 
-	}, [sessions])
-
-	return <div className="barchart" ref={d3ChartRef} style={{width:svgWidth, height:svgHeight}} />
+	return <div className="barchart" ref={chartContainerRef} style={{width:(viewportWidth/2), height:svgHeight}} />
 
 }
