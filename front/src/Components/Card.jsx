@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
  * @param {string} height - height of the icon.
  * @returns JSX for a card with an icon.
  */
-export default function LittleCard({imgSrc, bgColor, label, width, height}) {
+export default function Card({imgSrc, bgColor, label, width, height}) {
   return (
 	<>
 		<StyledCard $bgColor={bgColor} $width={width} $height={height}>
@@ -32,7 +32,7 @@ const StyledCard = styled.div`
 	background-color: ${({$bgColor}) => $bgColor};
 `
 
-LittleCard.propTypes = {
+Card.propTypes = {
 	imgSrc : PropTypes.string,
 	bgColor : PropTypes.string,
 	label : PropTypes.string,
