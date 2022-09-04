@@ -11,10 +11,10 @@ import PropTypes from 'prop-types'
  * @param {string} height - height of the icon.
  * @returns JSX for a card with an icon.
  */
-export default function Card({imgSrc, bgColor, label, width, height}) {
+export default function Card({imgSrc, bgColor, label, width, height, margin}) {
   return (
 	<>
-		<StyledCard $bgColor={bgColor} $width={width} $height={height}>
+		<StyledCard $bgColor={bgColor} $width={width} $height={height} $margin={margin}>
 			<Img src={imgSrc} alt={label} />
 		</StyledCard>		
 	</>
@@ -30,6 +30,7 @@ const StyledCard = styled.div`
 	width: ${({$width}) => $width};
 	height: ${({$height}) => $height};
 	background-color: ${({$bgColor}) => $bgColor};
+	margin: ${({$margin}) => $margin};
 `
 
 Card.propTypes = {
@@ -38,4 +39,5 @@ Card.propTypes = {
 	label : PropTypes.string,
 	width : PropTypes.string,
 	height : PropTypes.string,
+	margin : PropTypes.string,
 }
