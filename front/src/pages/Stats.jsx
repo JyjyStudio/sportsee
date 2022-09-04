@@ -49,28 +49,28 @@ export default function Stats() {
 			</Article>
 			<Aside>
 				<KeyDataContainer>
-					<Card imgSrc={Fire} width="100%" height="60px" bgColor="#FBEAEA" margin="0 1rem 0 0"/>
+					<Card imgSrc={Fire} width="60px" height="60px" bgColor="#FBEAEA" margin="0 1rem 0 0"/>
 					<DataContainer>
 						<DataContent>{keyData.calorieCount}kCal</DataContent>
 						<DataLabel>Calories</DataLabel>
 					</DataContainer>
 				</KeyDataContainer>
 				<KeyDataContainer>
-					<Card imgSrc={Chicken} width="100%" height="60px" bgColor="#E9F4FB" margin="0 1rem 0 0"/>
+					<Card imgSrc={Chicken} width="60px" height="60px" bgColor="#E9F4FB" margin="0 1rem 0 0"/>
 					<DataContainer>
 						<DataContent>{keyData.proteinCount}g</DataContent>
 						<DataLabel>Protéines</DataLabel>
 					</DataContainer>
 				</KeyDataContainer>
 				<KeyDataContainer>
-					<Card imgSrc={Apple} width="100%" height="60px" bgColor="#FBF6E5" margin="0 1rem 0 0"/>
+					<Card imgSrc={Apple} width="60px" height="60px" bgColor="#FBF6E5" margin="0 1rem 0 0"/>
 					<DataContainer>
 						<DataContent>{keyData.carbohydrateCount}g</DataContent>
 						<DataLabel>glucides</DataLabel>
 					</DataContainer>
 				</KeyDataContainer>
 				<KeyDataContainer>
-					<Card imgSrc={Burger} width="100%" height="60px" bgColor="#FBEAEF" margin="0 1rem 0 0"/>
+					<Card imgSrc={Burger} width="60px" height="60px" bgColor="#FBEAEF" margin="0 1rem 0 0"/>
 					<DataContainer>
 						<DataContent>{keyData.lipidCount}g</DataContent>
 						<DataLabel>Lipides</DataLabel>
