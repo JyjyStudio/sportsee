@@ -1,6 +1,7 @@
 import * as d3 from "d3"
 import { useEffect, useRef } from "react"
 import useViewport from '../../utils/Hooks/useViewport'
+import PropTypes from 'prop-types'
 
 export default function BarChart({data, svgHeight}) {
 
@@ -8,6 +9,8 @@ export default function BarChart({data, svgHeight}) {
 	const chartContainerRef = useRef()
 	//ref for resize event
 	const update = useRef(false)
+	// tooltips ref
+	const tooltipRef = useRef(false)
 	//responsive width
 	const { viewportWidth } = useViewport()
 
@@ -25,7 +28,7 @@ export default function BarChart({data, svgHeight}) {
 	
 	const DrawChart = (data) => {
 
-		const graphWidth = parseInt(viewportWidth/2) - margin.left - margin.right
+		const graphWidth = parseInt(d3.select(chartContainerRef.current).style('width')) - margin.left - margin.right
 		const graphHeight = parseInt(d3.select(chartContainerRef.current).style('height')) - margin.top - margin.bottom
 		
 		// create new chart
@@ -98,7 +101,7 @@ export default function BarChart({data, svgHeight}) {
 
 		//legend
 		const legend = svg.append('g')
-		//weight
+		//weight legend
 		legend.append('circle')
 			.attr('cx', graphWidth - 190)
 			.attr('cy', margin.bottom)
@@ -111,13 +114,13 @@ export default function BarChart({data, svgHeight}) {
 			.attr('dy', margin.bottom + 5)
 			.attr('fill', '#74798C')
 			.style('font-size', '14px')
-		//calories			
+		//calories legend		
 		legend.append('circle')
 			.attr('cx', graphWidth - 100)
 			.attr('cy', margin.bottom)
 			.attr('r', 4)
 			.attr('fill','#E60000')
-				
+		//text legend
 		legend.append('text')
 		.text('Calories brûlées (kCal)')
 		.attr("dx", graphWidth - 90)
@@ -125,24 +128,23 @@ export default function BarChart({data, svgHeight}) {
 		.attr('fill', '#74798C')
 		.style('font-size', '14px')
 
-		//data
+		//data			
 		//rounded weight line 
 		svg.append('g')
 			.selectAll('line')
 			.data(data)
 			.enter()
 			.append('line')
-			.attr('data-legend', 'weight')
 			.attr('x1', d => x_Scale(new Date(d.day).getDate()) - 7) // 7px offset to the right from the calorie line
 			.attr('x2', d => x_Scale(new Date(d.day).getDate()) - 7)
 			.attr('y1', d => graphHeight + margin.bottom - 5)
 			.attr('y2', d =>  graphHeight + margin.bottom - 5)
-			.transition()
-			.duration(700)
-			.attr('y2', d => y_Weight_Scale(d.kilogram) + 3)
 			.attr( 'stroke', "black")
 			.attr('stroke-width', "8")
 			.attr('stroke-linecap',"round")
+			.transition()
+			.duration(700)
+			.attr('y2', d => y_Weight_Scale(d.kilogram) + 3)
 
 		// rect weight line
 		svg.append('g')
@@ -194,6 +196,13 @@ export default function BarChart({data, svgHeight}) {
 			.attr('stroke-linecap',"butt")
 	}
 
-	return <div className="barchart" ref={chartContainerRef} style={{width:(viewportWidth/2), height:svgHeight}} />
+	return <div className="barchart" ref={chartContainerRef} style={{width:(viewportWidth/2 + margin.left + margin.right), height:svgHeight}}>
+		<div ref={tooltipRef} className="tooltip"><span id="tooltip-label"></span></div>
+	</div>
 
+}
+
+BarChart.propTypes = {
+	data: PropTypes.array.isRequired,
+	svgHeight: PropTypes.number,
 }
