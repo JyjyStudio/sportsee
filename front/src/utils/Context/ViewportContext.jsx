@@ -9,7 +9,7 @@ export const ViewportProvider = ({children}) => {
 
 	const handleWindowResize = () => setViewportWidth(window.innerWidth)
 	
-	const optimizedHandleWindowResize = useMemo(() => debounce(handleWindowResize, 60), [])
+	const optimizedHandleWindowResize = useMemo(() => debounce(handleWindowResize, 200), [])
 
 	useEffect(() => {
 		window.addEventListener('resize', optimizedHandleWindowResize)
