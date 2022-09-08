@@ -47,7 +47,7 @@ export default function Navbar() {
 			</Nav>
 			<Nav
 				width="90px"
-				height="calc(100vh - 70px)"
+				height="calc(100vh + 70px)"
 				bgColor="#000"
 				float="left"
 				justifyContent="center"
