@@ -3,6 +3,13 @@ import { useEffect, useRef } from "react"
 import useViewport from '../../utils/Hooks/useViewport'
 import PropTypes from 'prop-types'
 
+/**
+ * A Bar chart showing the user weight and calories burned. Filled by D3.js.
+ * @param {Object} props - props component
+ * @param {Array<Object>} props.data - user data
+ * @param {number} props.svgHeight - height of svg container
+ * @returns {ReactElement} a Bar Chart
+ */
 export default function BarChart({data, svgHeight}) {
 
 	//svg parent ref
@@ -263,6 +270,6 @@ export default function BarChart({data, svgHeight}) {
 }
 
 BarChart.propTypes = {
-	data: PropTypes.array.isRequired,
+	data: PropTypes.arrayOf(PropTypes.object).isRequired,
 	svgHeight: PropTypes.number,
 }

@@ -6,24 +6,30 @@ import Chicken from "../assets/chicken.svg"
 import Apple from "../assets/apple.svg"
 import Burger from "../assets/burger.svg"
 
+/**
+ * The right section showing the user calories, proteins, glucose and lipids consumed that day. Filled by D3.js.
+ * @param {Object} props - props component
+ * @param {Array<Object>} props.userData - user data
+ * @returns {ReactElement} an aside section with cards
+ */
 export default function UserData({userData}) {
-		//we create an object with all the informations to map on it
-		const icons = [
-			{path: Fire, bgColor: '#FBEAEA', unit: 'kCal', label: 'Calories', dataKey: 'calorieCount'}, 
-			{path: Chicken, bgColor: '#E9F4FB', unit: 'g', label: 'Protéines', dataKey: 'proteinCount'},
-			{path: Apple, bgColor: '#FBF6E5', unit: 'g', label: 'Glucides', dataKey: 'carbohydrateCount'}, 
-			{path: Burger, bgColor: '#FBEAEF', unit: 'g', label: 'Lipides', dataKey: 'lipidCount'}
-		]
-		return icons.map((d, index) => {
-			return(
-			<KeyDataContainer key={icons[index].dataKey}>
-				<Card imgSrc={icons[index].path} width="60px" height="60px" bgColor={icons[index].bgColor} margin="0 1rem 0 0"/>
-				<DataContainer>
-					<DataContent>{userData[d.dataKey]}{icons[index].unit}</DataContent>
-					<DataLabel>{icons[index].label}</DataLabel>
-				</DataContainer>
-			</KeyDataContainer>
-		)})
+	//we create an object with all the informations to map on it
+	const icons = [
+		{path: Fire, bgColor: '#FBEAEA', unit: 'kCal', label: 'Calories', dataKey: 'calorieCount'}, 
+		{path: Chicken, bgColor: '#E9F4FB', unit: 'g', label: 'Protéines', dataKey: 'proteinCount'},
+		{path: Apple, bgColor: '#FBF6E5', unit: 'g', label: 'Glucides', dataKey: 'carbohydrateCount'}, 
+		{path: Burger, bgColor: '#FBEAEF', unit: 'g', label: 'Lipides', dataKey: 'lipidCount'}
+	]
+	return icons.map((d, index) => {
+		return(
+		<KeyDataContainer key={icons[index].dataKey}>
+			<Card imgSrc={icons[index].path} width="60px" height="60px" bgColor={icons[index].bgColor} margin="0 1rem 0 0"/>
+			<DataContainer>
+				<DataContent>{userData[d.dataKey]}{icons[index].unit}</DataContent>
+				<DataLabel>{icons[index].label}</DataLabel>
+			</DataContainer>
+		</KeyDataContainer>
+	)})
 }
 
 const KeyDataContainer = styled.div`
