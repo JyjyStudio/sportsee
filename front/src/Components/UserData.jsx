@@ -10,9 +10,10 @@ import Burger from "../assets/burger.svg"
  * The right section showing the user calories, proteins, glucose and lipids consumed that day. Filled by D3.js.
  * @param {Object} props - props component
  * @param {Array<Object>} props.userData - user data
+ * @param {Number} props.margin - card margin
  * @returns {ReactElement} an aside section with cards
  */
-export default function UserData({userData}) {
+export default function UserData({userData, margin}) {
 	//we create an object with all the informations to map on it
 	const icons = [
 		{path: Fire, bgColor: '#FBEAEA', unit: 'kCal', label: 'Calories', dataKey: 'calorieCount'}, 
@@ -22,7 +23,7 @@ export default function UserData({userData}) {
 	]
 	return icons.map((d, index) => {
 		return(
-		<KeyDataContainer key={icons[index].dataKey}>
+		<KeyDataContainer key={icons[index].dataKey} margin={margin}>
 			<Card imgSrc={icons[index].path} width="60px" height="60px" bgColor={icons[index].bgColor} margin="0 1rem 0 0"/>
 			<DataContainer>
 				<DataContent>{userData[d.dataKey]}{icons[index].unit}</DataContent>
@@ -37,7 +38,7 @@ const KeyDataContainer = styled.div`
 	background-color: #F5F7F9;
 	border-radius: 5px;
 	padding: 30px;
-	margin-bottom: 1.5rem;
+	margin:${({margin}) => margin};
 `
 const DataContainer = styled.div`
 	display: flex;
@@ -52,5 +53,6 @@ const DataLabel = styled.div`
 	color: #74798C;
 `
 UserData.propTypes = {
-	userData : PropTypes.object.isRequired
+	userData : PropTypes.object.isRequired,
+	margin : PropTypes.string
 }
