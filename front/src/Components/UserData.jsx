@@ -39,6 +39,10 @@ const KeyDataContainer = styled.div`
 	border-radius: 5px;
 	padding: 30px;
 	margin:${({margin}) => margin};
+	width: 240px;
+	@media (max-width: 1024px) {
+		width: 220px;
+	}
 `
 const DataContainer = styled.div`
 	display: flex;

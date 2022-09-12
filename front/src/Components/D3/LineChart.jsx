@@ -15,14 +15,13 @@ export default function LinearChart({ data, svgHeight }) {
 	const lineContainerRef = useRef()
 	//ref for resize event
 	const updateLines = useRef(false)
-	// tooltips ref
 	//responsive width
 	const { viewportWidth } = useViewport()
 
 	useEffect(() => {
 		//if resize remove the previous chart
 		updateLines.current
-			? d3.select('.lineChart-svg').remove()
+			? d3.select('.line-chart-svg').remove()
 			: (updateLines.current = true)
 		DrawChart(data)
 
@@ -33,19 +32,13 @@ export default function LinearChart({ data, svgHeight }) {
 
 	const DrawChart = (data) => {
 		//dimentions
-		const graphWidth =
-			parseInt(d3.select(lineContainerRef.current).style('width')) -
-			margin.left -
-			margin.right
-		const graphHeight =
-			parseInt(d3.select(lineContainerRef.current).style('height')) -
-			margin.top -
-			margin.bottom
+		const graphWidth = parseInt(d3.select(lineContainerRef.current).style('width')) - margin.left - margin.right
+		const graphHeight = parseInt(d3.select(lineContainerRef.current).style('height')) - margin.top - margin.bottom
 		// create new chart
 		const svg = d3
 			.select(lineContainerRef.current)
 			.append('svg')
-			.classed('lineChart-svg', true)
+			.classed('line-chart-svg', true)
 			.attr('width', graphWidth + margin.left + margin.right)
 			.attr('height', graphHeight + margin.top + margin.bottom)
 			.style('background-color', '#FF0000')
@@ -56,8 +49,7 @@ export default function LinearChart({ data, svgHeight }) {
 			.attr('x', margin.right)
 			.attr('y', margin.top)
 			.text('Durée moyenne des sessions')
-			.style('font-size', '1.2vw')
-
+			.style('font-size', '1rem')
 		// X axis
 		const x_Scale = d3
 			.scaleLinear()
@@ -169,17 +161,8 @@ export default function LinearChart({ data, svgHeight }) {
 		}
 	}
 
-	return (
-		<div
-			className="lineChart"
-			ref={lineContainerRef}
-			style={{
-				width: viewportWidth / 6 + margin.left + margin.right,
-				height: svgHeight,
-				marginRight: '20px',
-			}}
-		></div>
-	)
+	return <div className="line-chart-container" // add a class for styling
+			ref={lineContainerRef} style={{height: svgHeight}}></div>
 }
 
 LinearChart.propTypes = {

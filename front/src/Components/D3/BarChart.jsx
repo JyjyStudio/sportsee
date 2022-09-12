@@ -42,7 +42,7 @@ export default function BarChart({data, svgHeight}) {
 			.append('svg')
 			.classed('barChart-svg', true)
 			.attr('width', graphWidth + margin.left + margin.right)
-			.attr('height', graphHeight + margin.top + margin.bottom)
+			.attr('height', svgHeight)
 			.style('background-color', '#F5F7F9')
 			.style('border-radius', '5px')
 
@@ -51,6 +51,7 @@ export default function BarChart({data, svgHeight}) {
 			.attr("x", margin.right)
 			.attr("y", 30)
 			.text('Activité quotidienne')
+			.style("font-weight", "500")
 
 		// X axis
 		const extent = d3.extent(data.map(d => new Date(d.day).getDate()))
@@ -65,7 +66,7 @@ export default function BarChart({data, svgHeight}) {
 
 		svg.append('g')
 			.call(x_Axis)
-			.attr('transform', `translate(0, ${graphHeight + margin.bottom})`)
+			.attr('transform', `translate(0, ${svgHeight - margin.top})`)
 			.attr("font-size", "1rem")
 			.select('path')
 			.attr('transform', 'scale(1.03) translate(-11,0)')
@@ -76,11 +77,11 @@ export default function BarChart({data, svgHeight}) {
 
 		const y_Weight_Scale = d3.scaleLinear()
 			.domain([max_weight-12, max_weight+3])
-			.range([graphHeight + margin.bottom, margin.bottom])
+			.range([svgHeight - margin.top, margin.bottom])
 			
 		const y_Calories_Scale = d3.scaleLinear()
 			.domain([0, max_calories])
-			.range([0, graphHeight - margin.top - margin.bottom])
+			.range([0, svgHeight / 2])
 
 		const y_Axis = d3.axisRight(y_Weight_Scale)
 			.ticks(3)
@@ -242,7 +243,7 @@ export default function BarChart({data, svgHeight}) {
 				.attr("y", 65)
 				.text(d.kilogram + "Kg")  
 				.style("text-anchor", "middle")
-				.style("font-size", "1vw")
+				.style("font-size", "13px")
 				.style('fill', '#fff')
 				.attr("opacity", "0")
 			group.append("text")
@@ -250,7 +251,7 @@ export default function BarChart({data, svgHeight}) {
 				.attr("y", 95)
 				.text(d.calories + "Kcal")   
 				.style("text-anchor", "middle")
-				.style("font-size", "1vw")
+				.style("font-size", "13px")
 				.style('fill', '#fff')   
 				.attr("opacity", "0")
 		})
@@ -264,7 +265,7 @@ export default function BarChart({data, svgHeight}) {
 
 	}
 
-	return <div className="barchart" ref={chartContainerRef} style={{width:(viewportWidth/2 + margin.left + margin.right), height:svgHeight}}>
+	return <div className="barchart-container" ref={chartContainerRef} style={{ height:svgHeight}}>
 	</div>
 
 }
