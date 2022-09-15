@@ -4,10 +4,12 @@ import useViewport from '../../utils/Hooks/useViewport'
 
 /**
  * A Radar chart showing the user performances. Filled by D3.js.
+ * @name RadarChart
  * @param {Object} props - props component
  * @param {Array<Object>} props.data - user data
  * @param {number} props.svgHeight - height of svg container
  * @returns {ReactElement} a radar Chart
+ * @component
  */
 export default function RadardChart({data, svgHeight}) {
 

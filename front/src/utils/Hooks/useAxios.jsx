@@ -2,32 +2,30 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 /**
- * Hook to fetch data from an url, using axios. 
- * @param {string} url - api 's url
+ * Hook to fetch data from enpoint(s), using axios. 
+ * @name useAxios
+ * @param {Array<string>} enpoints - api 's enpoint(s)
  * @returns {Object} the data, error and loading state in an object 
+ * @function
  */
-export default function UseAxios(url) {
-	const [fetchedData, setData] = useState(null)
+export default function useAxios([...enpoints]) {
+	const [data, setData] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
 
 	useEffect(() => {
-		async function getData() {
-			await axios
-				.get(url)
-				.then((response) => {
-					setData(response.data)
-				})
-				.catch((err) => {
-					setError(err)
-				})
-				.finally(() => {
-					setLoading(false)
-				})
-		}
+		axios
+			.all(enpoints.map((endpoint) => axios.get(endpoint)))
+			.then(axios.spread(({data: USER_MAIN_DATA}, {data:USER_AVERAGE_SESSIONS}, {data:USER_PERFORMANCE}, {data:USER_ACTIVITY}) => {
+				setData({USER_MAIN_DATA, USER_AVERAGE_SESSIONS, USER_PERFORMANCE, USER_ACTIVITY})
+			}))
+			.catch((err) => {
+				setError(err)
+			})
+			.finally(() => {
+				setLoading(false)
+			})
+	}, [])
 
-		getData()
-	}, [url])
-
-	return { fetchedData, error, loading }
+	return { data, error, loading }
 }

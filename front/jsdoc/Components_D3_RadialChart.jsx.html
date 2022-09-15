@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Components/D3/RadialChart.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">My React components</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="BarChart.html">BarChart</a></li><li><a href="Card.html">Card</a></li><li><a href="Home.html">Home</a></li><li><a href="LinearChart.html">LinearChart</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="RadarChart.html">RadarChart</a></li><li><a href="RadialChart.html">RadialChart</a></li><li><a href="Stats.html">Stats</a></li><li><a href="UserData.html">UserData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#useAxios">useAxios</a></li><li><a href="global.html#useViewport">useViewport</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>Components/D3/RadialChart.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as d3 from 'd3'
+import { useEffect, useRef } from 'react'
+import useViewport from '../../utils/Hooks/useViewport'
+import PropTypes from 'prop-types'
+
+/**
+ * A Radial chart showing an user score corresponding to the percentage of his weekly target. Filled by D3.js.
+ * @name RadialChart
+ * @param {Object} props - props component
+ * @param {Array&lt;Object>} props.data - user data
+ * @param {number} props.svgHeight - height of svg container
+ * @returns {ReactElement} a Radial Chart
+ * @component
+ */
+export default function RadialChart({ data, svgHeight }) {
+	//svg parent ref
+	const radialContainerRef = useRef()
+	//ref for resize event
+	const updateLines = useRef(false)
+	//responsive width
+	const { viewportWidth } = useViewport()
+
+	useEffect(() => {
+		//if resize remove the previous chart
+		updateLines.current
+			? d3.select('.radial-chart-svg').remove()
+			: (updateLines.current = true)
+		DrawChart(data)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data, viewportWidth])
+
+	const margin = { top: 40, left: 30, right: 30, bottom: 20 }
+
+	const DrawChart = () => {
+		//dimentions
+		const graphWidth = parseInt(d3.select(radialContainerRef.current).style('width')) - margin.left - margin.right
+		// create new chart
+		const svg = d3.select(radialContainerRef.current)
+			.append("svg")
+			.classed("radial-chart-svg", true)
+			.attr('width', "100%")
+			.attr("height", svgHeight)
+			.style("background-color", "#F5F7F9")
+			.style("border-radius", "5px")
+		// add a title
+		svg.append('text')
+			.attr('fill', '#000')
+			.attr('x', margin.left)
+			.attr('y', margin.top)
+			.text("Score")
+			.style("font-size", "1.5rem")
+			.style("font-weight", "500")
+		//Draw the Circle
+		svg.append("circle")
+			.attr("transform", `translate(${graphWidth /2 + margin.right}, ${svgHeight /2 + margin.bottom})`)
+			// .attr("cx", 0)
+			// .attr("cy", 0)
+			.attr("r", 90)
+			.attr("fill", "#fff");
+		//center text
+		svg.append("text")
+			.attr("fill", "#000")
+			.attr("x", "50%")
+			.attr("y", "50%")
+			.style("text-anchor", "middle")
+			.style("font-size", "1.8rem")
+			.style("font-weight", "500")
+			.text(`${data*100}%`)
+		svg.append("text")
+			.attr("fill", "#000")
+			.attr("x", "50%")
+			.attr("y", "62%")
+			.style("font-size", "1.2rem")
+			.style("font-weight", "400")
+			.style("text-anchor", "middle")
+			.text(`de votre`)
+		svg.append("text")
+			.attr("fill", "#000")
+			.attr("x", "50%")
+			.attr("y", "73%")
+			.style("text-anchor", "middle")
+			.style("font-size", "1.2rem")
+			.style("font-weight", "400")
+			.text(`objectif`)
+		//
+		const graph = svg.append("g")
+			.attr("transform", `translate(${graphWidth /2 + margin.right}, ${svgHeight /2 + margin.bottom})`)
+
+		const arcPath= d3.arc()
+			.outerRadius(100)
+			.innerRadius(90)
+			.startAngle(0)
+			.cornerRadius(8)
+
+		graph.append("path") 
+			.datum({ endAngle: -0.1 })
+			.attr("d", arcPath)
+			.attr("fill", "#FF0000")
+			.transition()
+            .duration(750)
+            .call(arcTween, data * Math.PI * -2)
+
+		function arcTween(transition, newFinishAngle) {
+			transition.attrTween("d", function (d) {
+				let interpolateEnd = d3.interpolate(d.endAngle, newFinishAngle)
+				return function (t) {
+					d.endAngle = interpolateEnd(t)
+					return arcPath(d)
+				}
+			})
+		}
+	}
+
+	return &lt;div className="radial-chart-container" ref={radialContainerRef}>&lt;/div>
+}
+
+RadialChart.propTypes = {
+	data: PropTypes.number.isRequired,
+	svgHeight: PropTypes.number,
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

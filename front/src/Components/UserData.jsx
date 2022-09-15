@@ -8,10 +8,12 @@ import Burger from "../assets/burger.svg"
 
 /**
  * The right section showing the user calories, proteins, glucose and lipids consumed that day. Filled by D3.js.
+ * @name UserData
  * @param {Object} props - props component
  * @param {Array<Object>} props.userData - user data
  * @param {Number} props.margin - card margin
  * @returns {ReactElement} an aside section with cards
+ * @component
  */
 export default function UserData({userData, margin}) {
 	//we create an object with all the informations to map on it

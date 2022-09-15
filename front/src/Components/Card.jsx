@@ -4,12 +4,14 @@ import PropTypes from 'prop-types'
 
 /**
  * Component to create a card
+ * @name Card
  * @param {string} imgSrc - path of the svg icon.
  * @param {string} bgColor - background-color of the card.
  * @param {string} label - label of the icon.
  * @param {string} width - width of the icon.
  * @param {string} height - height of the icon.
- * @returns JSX for a card with an icon.
+ * @returns {ReactElement} a card with an icon.
+ * @component
  */
 export default function Card({imgSrc, bgColor, label, width, height, margin}) {
   return (

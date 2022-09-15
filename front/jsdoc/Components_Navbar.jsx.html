@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Components/Navbar.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">My React components</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="BarChart.html">BarChart</a></li><li><a href="Card.html">Card</a></li><li><a href="Home.html">Home</a></li><li><a href="LinearChart.html">LinearChart</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="RadarChart.html">RadarChart</a></li><li><a href="RadialChart.html">RadialChart</a></li><li><a href="Stats.html">Stats</a></li><li><a href="UserData.html">UserData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#useAxios">useAxios</a></li><li><a href="global.html#useViewport">useViewport</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>Components/Navbar.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import styled from 'styled-components'
+import StyledLink from './StyledLink'
+import Img from './Img'
+import LogoNavbar from '../assets/logo-navbar.svg'
+import Card from './Card'
+import Yoga from '../assets/yoga.svg'
+import Piscine from '../assets/piscine.svg'
+import Velo from '../assets/velo.svg'
+import Altere from '../assets/altere.svg'
+
+/**
+ * The top and left navbar 
+ * @name Navbar
+ * @returns {ReactElement} the navbar
+ * @component
+ */
+export default function Navbar() {
+	const year = new Date().getFullYear()
+
+	const topNavbarItems = [
+		{ imgSrc: LogoNavbar, path: '/' },
+		{ label: 'Accueil', path: '/' },
+		{ label: 'Profil', path: '#profil' },
+		{ label: 'Réglages', path: '#reglages' },
+		{ label: 'Communauté', path: '#communaute' },
+	]
+	const leftNavbarItems = [
+		{ imgSrc: Yoga, path: '#yoga' },
+		{ imgSrc: Piscine, path: '#piscine' },
+		{ imgSrc: Velo, path: '#velo' },
+		{ imgSrc: Altere, path: '#musculation' },
+	]
+	return (
+		&lt;>
+			&lt;Nav height="70px" bgColor="#000" padding="0 30px">
+				&lt;NavList justifyContent="space-between" height="100%">
+					{topNavbarItems.map((item, id) => (
+						&lt;li key={`${id}-${item.label}`}>
+							&lt;StyledLink color="#fff" to={item.path}>
+								{ item.imgSrc 
+									? &lt;Img src={item.imgSrc} width="150px" alt="sportsee-logo" />
+									: item.label }
+							&lt;/StyledLink>
+						&lt;/li>
+					))}
+				&lt;/NavList>
+			&lt;/Nav>
+			&lt;Nav
+				width="90px"
+				height="calc(100vh + 70px)"
+				bgColor="#000"
+				float="left"
+				justifyContent="center"
+				alignItems="center"
+				gridTemplateRows="2fr 1fr"
+				column
+				grid
+			>
+				&lt;NavList column>
+					{leftNavbarItems.map((item, id) => (
+						&lt;li key={`${id}${item.path}`}>
+							&lt;StyledLink color="red" to={item.path}>
+								&lt;Card
+									imgSrc={item.imgSrc}
+									bgColor="#fff"
+									label={item.path}
+									width="50px"
+									height="50px"
+								/>
+							&lt;/StyledLink>
+						&lt;/li>
+					))}
+				&lt;/NavList>
+				&lt;Copyright>Copiryght, SportSee {year}&lt;/Copyright>
+			&lt;/Nav>
+		&lt;/>
+	)
+}
+
+const Nav = styled.nav`
+	width: ${({ width }) => width};
+	height: ${({ height }) => height};
+	float: ${({ float }) => float};
+	padding: ${({ padding }) => padding};
+	background-color: ${({ bgColor }) => bgColor};
+    display: ${({ grid }) => grid &amp;&amp; 'grid'};
+	justify-content: ${({ justifyContent }) => justifyContent};
+    align-items: ${({ alignItems }) => alignItems};
+	grid-template-rows: ${({ gridTemplateRows }) => gridTemplateRows};
+}
+`
+
+const NavList = styled.ul`
+	display: flex;
+	align-items: center;
+	font-weight: 500;
+	gap: 2rem;
+	background-color: ${({ bgColor }) => bgColor};
+	flex-direction: ${({ column }) => (column ? 'column' : 'row')};
+	justify-content: ${({ justifyContent }) => justifyContent};
+	height: ${({ height }) => height};
+	width: ${({ width }) => width};
+	float: ${({ float }) => float};
+	@media (max-width: 1024px) {
+		font-size: calc(15px + 1vw);
+	}
+	@media (max-width: 389px) {
+		font-size: calc(15px + 2vw);
+	}
+`
+const Copyright = styled.div`
+	color: #fff;
+	transform: rotate(-90deg);
+	font-size: 14px;
+	width: 10rem;
+`
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

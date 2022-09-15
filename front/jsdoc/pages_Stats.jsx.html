@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> pages/Stats.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">My React components</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="BarChart.html">BarChart</a></li><li><a href="Card.html">Card</a></li><li><a href="Home.html">Home</a></li><li><a href="LinearChart.html">LinearChart</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="RadarChart.html">RadarChart</a></li><li><a href="RadialChart.html">RadialChart</a></li><li><a href="Stats.html">Stats</a></li><li><a href="UserData.html">UserData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#useAxios">useAxios</a></li><li><a href="global.html#useViewport">useViewport</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>pages/Stats.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useParams } from "react-router-dom"
+import styled from "styled-components"
+import mocked_data from "../data/data"
+import BarChart from "../Components/D3/BarChart"
+import LineChart from "../Components/D3/LineChart"
+import RadialChart from "../Components/D3/RadialChart"
+import RadarChart from "../Components/D3/RadardChart"
+import UserData from "../Components/UserData"
+import useViewport from "../utils/Hooks/useViewport"
+import useAxios from "../utils/Hooks/useAxios"
+
+/**
+ * user stats' page. contain chart components with fetched or mocked data
+ * @name Stats
+ * @returns {ReactElement} the stats view with all charts
+ * @component
+ */
+export default function Stats() {
+
+	const params = useParams()
+	const id = parseInt(params.id)
+
+	const { viewportWidth } = useViewport()
+	
+	// switch to false for use api data, or true to use mocked data
+	const use_mocked_data = false
+
+	const endpoints = [
+		`http://localhost:3000/user/${id}`,
+		`http://localhost:3000/user/${id}/average-sessions`,
+		`http://localhost:3000/user/${id}/performance`,
+		`http://localhost:3000/user/${id}/activity`
+	]
+	const api_response = useAxios(endpoints),
+		api_data = api_response.data,
+		api_error = api_response.error,
+		api_loading = api_response.loading
+	 
+	console.log({api_data, api_error, api_loading});
+
+	// all data, mocked or fetched
+	const USER_MAIN_DATA = use_mocked_data
+		? mocked_data.USER_MAIN_DATA.filter((data) => data.id === id)[0]
+		: api_data?.USER_MAIN_DATA?.data
+
+	const keyData = USER_MAIN_DATA?.keyData
+	const score = USER_MAIN_DATA?.todayScore || USER_MAIN_DATA?.score
+
+	const USER_AVERAGE_SESSIONS = use_mocked_data
+		? mocked_data.USER_AVERAGE_SESSIONS.filter((data) => data.userId === id)[0]
+		: api_data?.USER_AVERAGE_SESSIONS?.data
+	const averageSessions = USER_AVERAGE_SESSIONS?.sessions
+
+	const USER_PERFORMANCE = use_mocked_data
+		? mocked_data.USER_PERFORMANCE.filter((data) => data.userId === id)[0]
+		: api_data?.USER_PERFORMANCE?.data
+
+	const USER_ACTIVITY = use_mocked_data
+		? mocked_data.USER_ACTIVITY.filter((data) => data.userId === id)[0]
+		: api_data?.USER_ACTIVITY?.data
+	const sessions = USER_ACTIVITY?.sessions
+	
+	// if data loading
+	if(api_loading) return &lt;h1>Chargement en cours&lt;/h1>
+	// if an error is thrown
+	if(api_error) return &lt;h1 style={{margin:"3rem 8rem"}}>{api_error.message}&lt;/h1>
+	// jsx returned if all data received
+	if(USER_MAIN_DATA &amp;&amp; USER_AVERAGE_SESSIONS &amp;&amp; USER_PERFORMANCE &amp;&amp; USER_ACTIVITY) return (
+		&lt;Wrapper>
+			&lt;section>
+				&lt;H1>Bonjour &lt;Span color="#FF0101">{USER_MAIN_DATA?.userInfos?.firstName}&lt;/Span>&lt;/H1>
+				&lt;H2 margin=".5rem 0 1.5rem" fontWeight="400" fontSize="1.1rem">Félicitation ! Vous avez explosé vos objectifs hier 👏&lt;/H2>
+			&lt;/section>
+			&lt;GridSection>
+				&lt;Article style={{width: viewportWidth > 1024 ? viewportWidth/2 + 70 : viewportWidth -240}}>
+					&lt;BarChart data={sessions} svgHeight={300} />
+					&lt;OtherCharts>
+						&lt;LineChart data={averageSessions} svgHeight={260} />
+						&lt;RadarChart data={USER_PERFORMANCE} svgHeight={260} />
+						&lt;RadialChart data={score} svgHeight={260} />
+					&lt;/OtherCharts>
+				&lt;/Article>
+				&lt;Aside style={{width: viewportWidth > 1024 ? '250px' : (viewportWidth -240)}}>
+					&lt;UserData userData={keyData} />
+				&lt;/Aside>
+			&lt;/GridSection>
+		&lt;/Wrapper>
+	)
+	
+}
+
+const Wrapper = styled.main`
+	margin-left: 150px;
+	margin-top: 40px;
+`
+const H1 = styled.h1`
+	font-size: 40px;
+`
+const Span = styled.span`
+	color: ${({color}) => color};
+`
+const H2 = styled.h2`
+	margin: ${({margin}) => margin};
+	font-weight: ${({fontWeight}) => fontWeight};
+	font-size: ${({fontSize}) => fontSize};
+`
+const GridSection = styled.section`
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	@media (max-width: 1024px) {
+		grid-template-columns: 1fr;
+	}
+`
+const Aside = styled.aside`
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	margin-bottom: 2rem;
+	width: ${({width}) => width};
+	@media (min-width: 1024px) and (max-width: 1240px) {
+		margin: 0 auto
+	}
+	@media (max-width: 1024px) {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+`
+const Article = styled.article`
+	display: flex;
+	flex-direction: column;
+`
+const OtherCharts = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	margin: 30px 0;
+	width: 100%;
+	gap: 15px;
+	@media (max-width: 1024px) {
+		grid-template-columns: 1fr;
+	}
+`</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

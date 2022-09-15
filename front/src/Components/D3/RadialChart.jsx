@@ -5,10 +5,12 @@ import PropTypes from 'prop-types'
 
 /**
  * A Radial chart showing an user score corresponding to the percentage of his weekly target. Filled by D3.js.
+ * @name RadialChart
  * @param {Object} props - props component
  * @param {Array<Object>} props.data - user data
  * @param {number} props.svgHeight - height of svg container
  * @returns {ReactElement} a Radial Chart
+ * @component
  */
 export default function RadialChart({ data, svgHeight }) {
 	//svg parent ref

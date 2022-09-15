@@ -10,7 +10,9 @@ import Altere from '../assets/altere.svg'
 
 /**
  * The top and left navbar 
+ * @name Navbar
  * @returns {ReactElement} the navbar
+ * @component
  */
 export default function Navbar() {
 	const year = new Date().getFullYear()
@@ -35,15 +37,9 @@ export default function Navbar() {
 					{topNavbarItems.map((item, id) => (
 						<li key={`${id}-${item.label}`}>
 							<StyledLink color="#fff" to={item.path}>
-								{item.imgSrc ? (
-									<Img
-										src={item.imgSrc}
-										width="150px"
-										alt="sportsee-logo"
-									/>
-								) : (
-									item.label
-								)}
+								{ item.imgSrc 
+									? <Img src={item.imgSrc} width="150px" alt="sportsee-logo" />
+									: item.label }
 							</StyledLink>
 						</li>
 					))}

@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Components/UserData.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">My React components</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Components</h3><ul><li><a href="BarChart.html">BarChart</a></li><li><a href="Card.html">Card</a></li><li><a href="Home.html">Home</a></li><li><a href="LinearChart.html">LinearChart</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="RadarChart.html">RadarChart</a></li><li><a href="RadialChart.html">RadialChart</a></li><li><a href="Stats.html">Stats</a></li><li><a href="UserData.html">UserData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#useAxios">useAxios</a></li><li><a href="global.html#useViewport">useViewport</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>Components/UserData.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import styled from "styled-components"
+import PropTypes from 'prop-types'
+import Card from "./Card"
+import Fire from "../assets/fire.svg"
+import Chicken from "../assets/chicken.svg"
+import Apple from "../assets/apple.svg"
+import Burger from "../assets/burger.svg"
+
+/**
+ * The right section showing the user calories, proteins, glucose and lipids consumed that day. Filled by D3.js.
+ * @name UserData
+ * @param {Object} props - props component
+ * @param {Array&lt;Object>} props.userData - user data
+ * @param {Number} props.margin - card margin
+ * @returns {ReactElement} an aside section with cards
+ * @component
+ */
+export default function UserData({userData, margin}) {
+	//we create an object with all the informations to map on it
+	const icons = [
+		{path: Fire, bgColor: '#FBEAEA', unit: 'kCal', label: 'Calories', dataKey: 'calorieCount'}, 
+		{path: Chicken, bgColor: '#E9F4FB', unit: 'g', label: 'Protéines', dataKey: 'proteinCount'},
+		{path: Apple, bgColor: '#FBF6E5', unit: 'g', label: 'Glucides', dataKey: 'carbohydrateCount'}, 
+		{path: Burger, bgColor: '#FBEAEF', unit: 'g', label: 'Lipides', dataKey: 'lipidCount'}
+	]
+	return icons.map((d, index) => {
+		return(
+		&lt;KeyDataContainer key={icons[index].dataKey} margin={margin}>
+			&lt;Card imgSrc={icons[index].path} width="60px" height="60px" bgColor={icons[index].bgColor} margin="0 1rem 0 0"/>
+			&lt;DataContainer>
+				&lt;DataContent>{userData[d.dataKey]}{icons[index].unit}&lt;/DataContent>
+				&lt;DataLabel>{icons[index].label}&lt;/DataLabel>
+			&lt;/DataContainer>
+		&lt;/KeyDataContainer>
+	)})
+}
+
+const KeyDataContainer = styled.div`
+	display: flex;
+	background-color: #F5F7F9;
+	border-radius: 5px;
+	padding: 30px;
+	margin:${({margin}) => margin};
+	width: 240px;
+	@media (max-width: 1024px) {
+		width: 220px;
+	}
+`
+const DataContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+`
+const DataContent = styled.div`
+	font-size: 1.3rem;
+	font-weight: 700;
+	padding-bottom: 10px;
+`
+const DataLabel = styled.div`
+	color: #74798C;
+`
+UserData.propTypes = {
+	userData : PropTypes.object.isRequired,
+	margin : PropTypes.string
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

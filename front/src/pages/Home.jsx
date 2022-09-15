@@ -1,6 +1,12 @@
 import styled from "styled-components"
 import StyledLink from "../Components/StyledLink"
 
+/**
+ * Sportsee homepage. allows you to choose a user and see his stats page
+ * @name Home
+ * @returns {ReactElement} homepage view
+ * @component
+ */
 export default function Home() {
   return (
 	<Wrapper>
