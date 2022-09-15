@@ -2,6 +2,12 @@
 
 Sportsee is an application for monitoring your physical activity. Project 12 of the OpenClassrooms "Développeur d'application - JavaScript React" course. For this project I'm using React, D3.js and Recharts and is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+**Useful links:**
+- [Live demo 🌍](https://jyjystudio.github.io/SportSee-P12) 
+- [Repository 📖](https://github.com/JyjyStudio/SportSee-P12)
+- [Documentation 📑](https://jyjystudio.github.io/SportSee-P12/jsdoc/index.html)
+- [Figma mock-up 🖼️](https://www.figma.com/file/BMomGVZqLZb811mDMShpLu/UI-design-Sportify-FR?node-id=1%3A2)
+
 ## Available Scripts
 
 In the project directory, you can run:
