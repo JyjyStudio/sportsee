@@ -8,6 +8,10 @@ import Piscine from '../assets/piscine.svg'
 import Velo from '../assets/velo.svg'
 import Altere from '../assets/altere.svg'
 
+/**
+ * The top and left navbar 
+ * @returns {ReactElement} the navbar
+ */
 export default function Navbar() {
 	const year = new Date().getFullYear()
 

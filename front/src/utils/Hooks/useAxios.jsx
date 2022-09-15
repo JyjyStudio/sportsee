@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+/**
+ * Hook to fetch data from an url, using axios. 
+ * @param {string} url - api 's url
+ * @returns {Object} the data, error and loading state in an object 
+ */
 export default function UseAxios(url) {
 	const [fetchedData, setData] = useState(null)
 	const [loading, setLoading] = useState(true)
