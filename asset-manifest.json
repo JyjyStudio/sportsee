@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/SportSee-P12/static/css/main.17d41376.css",
-    "main.js": "/SportSee-P12/static/js/main.171d302f.js",
+    "main.js": "/SportSee-P12/static/js/main.212e202b.js",
     "static/media/logo-navbar.svg": "/SportSee-P12/static/media/logo-navbar.837414860efdf652f26ae7be654e06c5.svg",
     "static/media/piscine.svg": "/SportSee-P12/static/media/piscine.bc12b705d445672f550a8441d581c700.svg",
     "static/media/velo.svg": "/SportSee-P12/static/media/velo.fe885ecda828d3e2f637bb3b675db76c.svg",
@@ -13,10 +13,10 @@
     "static/media/fire.svg": "/SportSee-P12/static/media/fire.25fef86ed5860200bdf90f9cd185e1e3.svg",
     "static/media/altere.svg": "/SportSee-P12/static/media/altere.9d22814b98d0ca386d9ddacded4eae80.svg",
     "main.17d41376.css.map": "/SportSee-P12/static/css/main.17d41376.css.map",
-    "main.171d302f.js.map": "/SportSee-P12/static/js/main.171d302f.js.map"
+    "main.212e202b.js.map": "/SportSee-P12/static/js/main.212e202b.js.map"
   },
   "entrypoints": [
     "static/css/main.17d41376.css",
-    "static/js/main.171d302f.js"
+    "static/js/main.212e202b.js"
   ]
 }
