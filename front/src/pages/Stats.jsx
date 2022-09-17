@@ -23,7 +23,7 @@ export default function Stats() {
 	const { viewportWidth } = useViewport()
 	
 	// switch to false for use api data, or true to use mocked data
-	const use_mocked_data = false
+	const use_mocked_data = true
 
 	const endpoints = [
 		`http://localhost:3000/user/${id}`,
@@ -36,7 +36,7 @@ export default function Stats() {
 		api_error = api_response.error,
 		api_loading = api_response.loading
 	 
-	console.log({api_data, api_error, api_loading});
+	// console.log({api_data, api_error, api_loading});
 
 	// all data, mocked or fetched
 	const USER_MAIN_DATA = use_mocked_data
@@ -63,7 +63,7 @@ export default function Stats() {
 	// if data loading
 	if(api_loading) return <h1>Chargement en cours</h1>
 	// if an error is thrown
-	if(api_error) return <h1 style={{margin:"3rem 8rem"}}>{api_error.message}</h1>
+	if(!use_mocked_data && api_error) return <h1 style={{margin:"3rem 8rem"}}>{api_error.message}</h1>
 	// jsx returned if all data received
 	if(USER_MAIN_DATA && USER_AVERAGE_SESSIONS && USER_PERFORMANCE && USER_ACTIVITY) return (
 		<Wrapper>
@@ -72,7 +72,7 @@ export default function Stats() {
 				<H2 margin=".5rem 0 1.5rem" fontWeight="400" fontSize="1.1rem">Félicitation ! Vous avez explosé vos objectifs hier 👏</H2>
 			</section>
 			<GridSection>
-				<Article style={{width: viewportWidth > 1024 ? viewportWidth/2 + 70 : viewportWidth -240}}>
+				<Article style={{width: viewportWidth > 1024 ? viewportWidth/2 + 70 : "100%"}}>
 					<BarChart data={sessions} svgHeight={300} />
 					<OtherCharts>
 						<LineChart data={averageSessions} svgHeight={260} />
@@ -80,7 +80,7 @@ export default function Stats() {
 						<RadialChart data={score} svgHeight={260} />
 					</OtherCharts>
 				</Article>
-				<Aside style={{width: viewportWidth > 1024 ? '250px' : (viewportWidth -240)}}>
+				<Aside style={{width: viewportWidth > 1024 ? '250px' : "100%"}}>
 					<UserData userData={keyData} />
 				</Aside>
 			</GridSection>
@@ -90,8 +90,12 @@ export default function Stats() {
 }
 
 const Wrapper = styled.main`
-	margin-left: 150px;
+	margin-left: 50px;
 	margin-top: 40px;
+	@media (max-width: 700px) {
+		margin: 100px 0;
+		padding: 0 30px;
+	}
 `
 const H1 = styled.h1`
 	font-size: 40px;
@@ -109,6 +113,9 @@ const GridSection = styled.section`
 	grid-template-columns: 2fr 1fr;
 	@media (max-width: 1024px) {
 		grid-template-columns: 1fr;
+	}
+	@media (max-width: 700px) {
+		text-align:center;
 	}
 `
 const Aside = styled.aside`

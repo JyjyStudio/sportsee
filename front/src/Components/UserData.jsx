@@ -45,6 +45,9 @@ const KeyDataContainer = styled.div`
 	@media (max-width: 1024px) {
 		width: 220px;
 	}
+	@media (max-width: 700px) {
+		width: 100%;
+	}
 `
 const DataContainer = styled.div`
 	display: flex;
