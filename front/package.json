@@ -1,7 +1,7 @@
 {
   "name": "sportsee",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -19,7 +19,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "jsdoc": "jsdoc -c ./jsdoc.json --readme ./README.md"
+    "jsdoc": "jsdoc -c ./jsdoc.json --readme ./README.md",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -40,7 +42,7 @@
     ]
   },
   "devDependencies": {
-    "better-docs": "^2.7.2",
+    "gh-pages": "^4.0.0",
     "jsdoc": "^3.6.11"
   }
 }
