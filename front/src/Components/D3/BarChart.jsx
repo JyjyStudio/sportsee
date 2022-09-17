@@ -114,27 +114,25 @@ export default function BarChart({data, svgHeight}) {
 		//weight legend
 		legend.append('circle')
 			.attr('cx', graphWidth - 190)
-			.attr('cy', margin.bottom)
+			.attr('cy', viewportWidth > 700 ? margin.bottom + 5 : 50)
 			.attr('r', 4)
 			.attr('fill','black')
-
 		legend.append('text')
 			.text('Poids (kg)')
 			.attr("dx", graphWidth - 180)
-			.attr('dy', margin.bottom + 5)
+			.attr('dy', viewportWidth > 700 ? margin.bottom + 5 : 50)
 			.attr('fill', '#74798C')
 			.style('font-size', '14px')
 		//calories legend		
 		legend.append('circle')
 			.attr('cx', graphWidth - 100)
-			.attr('cy', margin.bottom)
+			.attr('cy', viewportWidth > 700 ? margin.bottom + 5 : 50)
 			.attr('r', 4)
 			.attr('fill','#E60000')
-		//text legend
 		legend.append('text')
 		.text('Calories brûlées (kCal)')
 		.attr("dx", graphWidth - 90)
-		.attr('dy', margin.bottom + 5)
+		.attr('dy', viewportWidth > 700 ? margin.bottom + 5 : 50)
 		.attr('fill', '#74798C')
 		.style('font-size', '14px')
 
