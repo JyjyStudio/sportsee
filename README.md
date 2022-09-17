@@ -5,7 +5,7 @@ Sportsee is an application for monitoring your physical activity. Project 12 of 
 **Useful links:**
 - [Live demo 🌍](https://jyjystudio.github.io/SportSee-P12) 
 - [Repository 📖](https://github.com/JyjyStudio/SportSee-P12)
-- [Documentation 📑](https://jyjystudio.github.io/SportSee-P12/jsdoc/index.html)
+- [Documentation 📑](https://jyjystudio.github.io/jsdoc-p12/)
 - [Figma mock-up 🖼️](https://www.figma.com/file/BMomGVZqLZb811mDMShpLu/UI-design-Sportify-FR?node-id=1%3A2)
 
 ## Available Scripts
