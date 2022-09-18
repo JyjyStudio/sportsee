@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-Sportsee is an application for monitoring your physical activity. 12th project of the OpenClassrooms "Développeur d'application - JavaScript React" course. For this project I'm using React, D3.js and Recharts and is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sportsee is an application for monitoring your physical activity. 12th project of the OpenClassrooms "Web app developer - JavaScript React" course. For this project I'm using React, D3.js and Recharts and is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 **Useful links:**
 - [Live demo 🌍](https://jyjystudio.github.io/SportSee-P12) 
