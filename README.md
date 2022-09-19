@@ -8,6 +8,16 @@ Sportsee is an application for monitoring your physical activity. 12th project o
 - [Documentation 📑](https://jyjystudio.github.io/jsdoc-p12/)
 - [Figma mock-up 🖼️](https://www.figma.com/file/BMomGVZqLZb811mDMShpLu/UI-design-Sportify-FR?node-id=1%3A2)
 
+
+## Installation
+
+1 - Download this project and open the folder
+
+2 - Install the dependencies with`npm install`
+
+3 - for using api data, open the server with `npm run dev` in 'back' folder
+
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -27,3 +37,8 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+
+### `npm run jsdoc`
+
+Builds the documentation to the `jsdoc` folder.\
