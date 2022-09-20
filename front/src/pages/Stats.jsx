@@ -8,6 +8,7 @@ import RadarChart from "../Components/D3/RadardChart"
 import UserData from "../Components/UserData"
 import useViewport from "../utils/Hooks/useViewport"
 import useAxios from "../utils/Hooks/useAxios"
+import FormatData from "../utils/Classes/FormatData"
 
 /**
  * user stats' page. contain chart components with fetched or mocked data
@@ -35,47 +36,60 @@ export default function Stats() {
 		api_data = api_response.data,
 		api_error = api_response.error,
 		api_loading = api_response.loading
-	 
+
 	// console.log({api_data, api_error, api_loading});
 
-	// all data, mocked or fetched
-	const USER_MAIN_DATA = use_mocked_data
-		? mocked_data.USER_MAIN_DATA.filter((data) => data.id === id)[0]
-		: api_data?.USER_MAIN_DATA.data
-	const keyData = USER_MAIN_DATA?.keyData
-	const score = USER_MAIN_DATA?.todayScore || USER_MAIN_DATA?.score
-
-	const USER_AVERAGE_SESSIONS = use_mocked_data
-		? mocked_data.USER_AVERAGE_SESSIONS.filter((data) => data.userId === id)[0]
-		: api_data?.USER_AVERAGE_SESSIONS.data
-	const averageSessions = USER_AVERAGE_SESSIONS?.sessions
-
-	const USER_PERFORMANCE = use_mocked_data
-		? mocked_data.USER_PERFORMANCE.filter((data) => data.userId === id)[0]
-		: api_data?.USER_PERFORMANCE.data
-
-	const USER_ACTIVITY = use_mocked_data
-		? mocked_data.USER_ACTIVITY.filter((data) => data.userId === id)[0]
-		: api_data?.USER_ACTIVITY.data
-	const sessions = USER_ACTIVITY?.sessions
+	const formatted_api_data = new FormatData(
+		api_data?.USER_MAIN_DATA.data,
+		api_data?.USER_ACTIVITY.data,
+		api_data?.USER_AVERAGE_SESSIONS.data,
+		api_data?.USER_PERFORMANCE.data
+	)
+	const formatted_mocked_data = new FormatData(
+		mocked_data?.USER_MAIN_DATA.filter((data) => data.id === id)[0],
+		mocked_data?.USER_ACTIVITY.filter((data) => data.userId === id)[0],
+		mocked_data?.USER_AVERAGE_SESSIONS.filter((data) => data.userId === id)[0],
+		mocked_data?.USER_PERFORMANCE.filter((data) => data.userId === id)[0]
+	)
+	// console.log(formatted_api_data)
+	// console.log(formatted_mocked_data)
 	
+	// all data, mocked or fetched
+	const user_main_data = use_mocked_data
+		? formatted_mocked_data.user_main_data
+		: formatted_api_data.user_main_data
+	const keyData = user_main_data.key_data
+	const score = user_main_data.today_score
+
+	const user_average_sessions = use_mocked_data
+		? formatted_mocked_data.user_average_sessions
+		: formatted_api_data.user_average_sessions
+
+	const user_performance = use_mocked_data
+		? formatted_mocked_data.user_performance
+		: formatted_api_data.user_performance
+
+	const user_activity = use_mocked_data
+		? formatted_mocked_data.user_activity
+		: formatted_api_data.user_activity
+
 	// if data loading
 	if(api_loading) return <h1>Chargement en cours</h1>
 	// if an error is thrown
 	if(!use_mocked_data && api_error) return <h1 style={{margin:"3rem 8rem"}}>{api_error.message}</h1>
 	// jsx returned if all data received
-	if(USER_MAIN_DATA && USER_AVERAGE_SESSIONS && USER_PERFORMANCE && USER_ACTIVITY) return (
+	if(user_main_data && user_average_sessions && user_performance && user_activity) return (
 		<Wrapper>
 			<section>
-				<H1>Bonjour <Span color="#FF0101">{USER_MAIN_DATA?.userInfos?.firstName}</Span></H1>
+				<H1>Bonjour <Span color="#FF0101">{user_main_data.user_infos.firstName}</Span></H1>
 				<H2 margin=".5rem 0 1.5rem" fontWeight="400" fontSize="1.1rem">Félicitation ! Vous avez explosé vos objectifs hier 👏</H2>
 			</section>
 			<GridSection>
 				<Article style={{width: viewportWidth > 1024 ? viewportWidth/2 + 70 : "100%"}}>
-					<BarChart data={sessions} svgHeight={300} />
+					<BarChart data={user_activity} svgHeight={300} />
 					<OtherCharts>
-						<LineChart data={averageSessions} svgHeight={260} />
-						<RadarChart data={USER_PERFORMANCE} svgHeight={260} />
+						<LineChart data={user_average_sessions} svgHeight={260} />
+						<RadarChart data={user_performance} svgHeight={260} />
 						<RadialChart data={score} svgHeight={260} />
 					</OtherCharts>
 				</Article>
