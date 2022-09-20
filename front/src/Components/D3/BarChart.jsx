@@ -13,7 +13,6 @@ import PropTypes from 'prop-types'
  * @component
  */
 export default function BarChart({data, svgHeight}) {
-
 	//svg parent ref
 	const chartContainerRef = useRef()
 	//ref for resize event
@@ -56,7 +55,7 @@ export default function BarChart({data, svgHeight}) {
 			.style("font-weight", "500")
 
 		// X axis
-		const extent = d3.extent(data.map(d => new Date(d.day).getDate()))
+		const extent = d3.extent(data.map(d => d.day))
 		const x_Scale = d3.scaleLinear()
 			.domain(extent)
 			.range([margin.left, graphWidth - margin.right])
@@ -143,8 +142,8 @@ export default function BarChart({data, svgHeight}) {
 			.data(data)
 			.enter()
 			.append('line')
-			.attr('x1', d => x_Scale(new Date(d.day).getDate()) - 7) // 7px offset to the right from the calorie line
-			.attr('x2', d => x_Scale(new Date(d.day).getDate()) - 7)
+			.attr('x1', d => x_Scale(d.day) - 7) // 7px offset to the right from the calorie line
+			.attr('x2', d => x_Scale(d.day) - 7)
 			.attr('y1', d => graphHeight + margin.bottom - 5)
 			.attr('y2', d =>  graphHeight + margin.bottom - 5)
 			.attr( 'stroke', "black")
@@ -160,8 +159,8 @@ export default function BarChart({data, svgHeight}) {
 			.data(data)
 			.enter()
 			.append('line')
-			.attr('x1', d => x_Scale(new Date(d.day).getDate()) - 7)
-			.attr('x2', d => x_Scale(new Date(d.day).getDate()) - 7)
+			.attr('x1', d => x_Scale(d.day) - 7)
+			.attr('x2', d => x_Scale(d.day) - 7)
 			.attr('y1', d => graphHeight + margin.bottom)
 			.attr('y2', d => graphHeight + margin.bottom)
 			.transition()
@@ -176,8 +175,8 @@ export default function BarChart({data, svgHeight}) {
 			.data(data)
 			.enter()
 			.append('line')
-			.attr('x1', d => x_Scale(new Date(d.day).getDate()) + 7)
-			.attr('x2', d => x_Scale(new Date(d.day).getDate()) + 7)
+			.attr('x1', d => x_Scale(d.day) + 7)
+			.attr('x2', d => x_Scale(d.day) + 7)
 			.attr('y1', d => graphHeight + margin.bottom - 5)
 			.attr('y2', d => graphHeight + margin.bottom - 5)
 			.transition()
@@ -192,8 +191,8 @@ export default function BarChart({data, svgHeight}) {
 			.data(data)
 			.enter()
 			.append('line')
-			.attr('x1', d => x_Scale(new Date(d.day).getDate()) + 7)
-			.attr('x2', d => x_Scale(new Date(d.day).getDate()) + 7)
+			.attr('x1', d => x_Scale(d.day) + 7)
+			.attr('x2', d => x_Scale(d.day) + 7)
 			.attr('y1', d => graphHeight + margin.bottom)
 			.attr('y2', d => graphHeight + margin.bottom)
 			.transition()
@@ -265,12 +264,17 @@ export default function BarChart({data, svgHeight}) {
 
 	}
 
-	return <div className="barchart-container" ref={chartContainerRef} style={{ height:svgHeight}}>
-	</div>
+	return <div className="barchart-container" ref={chartContainerRef} style={{ height:svgHeight}}></div>
 
 }
 
+const data_shape_prop = {
+	day: PropTypes.string.isRequired, 
+	kilogram: PropTypes.number.isRequired,
+	calories: PropTypes.number.isRequired
+}
+
 BarChart.propTypes = {
-	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+	data: PropTypes.arrayOf(PropTypes.shape(data_shape_prop)).isRequired,
 	svgHeight: PropTypes.number,
 }
