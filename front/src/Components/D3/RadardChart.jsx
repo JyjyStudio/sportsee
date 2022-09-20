@@ -17,12 +17,12 @@ export default function RadardChart({data, svgHeight}) {
 
   	// Format X axis label
 	const formatLabels = (kindId) => { 
-		const kind = data.kind[kindId + 1]
+		const kind = data[kindId].kind
 		return (kind)
   }
 	return (
 		<ResponsiveContainer height={svgHeight}>
-			<RadarChart data={data.data} cx='47%' outerRadius={viewportWidth > 1024 && 81} style={{backgroundColor: "#282A30", borderRadius:5}} >
+			<RadarChart data={data} cx='47%' outerRadius={viewportWidth > 1024 && 81} style={{backgroundColor: "#282A30", borderRadius:5}} >
 				<PolarGrid radialLines={false} />
 				<PolarAngleAxis tickFormatter={formatLabels} tick={{ fill: 'white'}} tickSize={6} style={{transform: "translate(2px, -7px) scaleY(1.1)", fontSize: "12px"}} />
 				<Radar dataKey="value" fill="#ff0000" fillOpacity={0.7} />
@@ -31,7 +31,12 @@ export default function RadardChart({data, svgHeight}) {
 	)
 }
 
-RadarChart.propTypes = {
-	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+RadardChart.propTypes = {
+	data: PropTypes.arrayOf(
+		PropTypes.shape({
+			value: PropTypes.number.isRequired,
+			kind: PropTypes.string.isRequired,
+		})
+	).isRequired,
 	svgHeight: PropTypes.number,
 }
