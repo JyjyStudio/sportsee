@@ -9,7 +9,7 @@ import Velo from '../assets/velo.svg'
 import Altere from '../assets/altere.svg'
 import BurgerMenu from '../assets/menu-burger-icon.png'
 import useViewport from '../utils/Hooks/useViewport'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 /**
@@ -26,6 +26,16 @@ export default function Navbar() {
 
 	const {viewportWidth} = useViewport()
 	const year = new Date().getFullYear()
+	
+	//to adjust the height of the page 
+	const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
+	useEffect(() => {
+		setViewportHeight(window.innerHeight)
+		const heightTimeout = setTimeout(() => {
+			setViewportHeight(document.body.scrollHeight)
+		}, 300)
+		return () => clearTimeout(heightTimeout)
+	}, [viewportWidth])
 
 	const topNavbarItems = [
 		{ imgSrc: LogoNavbar, path: '/' },
@@ -42,15 +52,13 @@ export default function Navbar() {
 	]
 	return (
 		<>
-			<Nav padding="0 30px"
-			height={(viewportWidth < 700 && toggleMenu) ? "auto" : "70px"} >
-
-			{ (viewportWidth > 700 || toggleMenu) && 
-				
+		{/* top navbar*/}
+			<Nav padding="0 30px" height={(viewportWidth < 700 && toggleMenu) ? "208px" : "70px"} animated>
+				{ (viewportWidth > 700 || toggleMenu) && 
 					<NavList justifyContent="space-between" height="100%">
 						{topNavbarItems.map((item, id) => (
-							<li key={`${id}-${item.label}`}>
-								<StyledLink color="#fff" to={item.path}>
+							<li key={`${id}-${item.label}`} tabIndex="1">
+								<StyledLink color="#fff" to={item.path} onClick={handleMenu}>
 									{ item.imgSrc 
 										? <Img src={item.imgSrc} width="150px" alt="sportsee-logo" />
 										: item.label }
@@ -58,34 +66,28 @@ export default function Navbar() {
 							</li>
 						))}
 					</NavList>
-			}
+				}
+			
+			{/* Menu burger, only on mobile size */}
 			<Button onClick={handleMenu}/>
-
+			
+			{/* left navbar */}
 			</Nav>
-
 			{ viewportWidth > 700 &&
-			<Nav
-				width="90px"
-				height="calc(100vh + 70px)"
+			<Nav width="80px"
+				height={`${viewportHeight}px`}
 				margin="0 50px 0 0"
 				float="left"
 				justifyContent="center"
 				alignItems="center"
-				gridTemplateRows="2fr 1fr"
-				grid
-			>
+				gridTemplateRows="30rem 10rem"
+				grid >
 				<NavList flexDirection="column">
 					{ 
 						leftNavbarItems.map((item, id) => (
-							<li key={`${id}${item.path}`}>
+							<li key={`${id}${item.path}`} tabIndex="1">
 								<StyledLink color="red" to={item.path}>
-									<Card
-										imgSrc={item.imgSrc}
-										bgColor="#fff"
-										label={item.path}
-										width="50px"
-										height="50px"
-									/>
+									<Card imgSrc={item.imgSrc} bgColor="#fff" label={item.path} width="50px" height="50px" />
 								</StyledLink>
 							</li>
 						))
@@ -108,6 +110,7 @@ const Nav = styled.nav`
     display: ${({ grid }) => grid && 'grid'};
 	justify-content: ${({ justifyContent }) => justifyContent};
     align-items: ${({ alignItems }) => alignItems};
+    transition: ${({ animated }) => animated && "height .2s ease-in-out"};
 	grid-template-rows: ${({ gridTemplateRows }) => gridTemplateRows};
 	@media (max-width: 700px) {
 		position: fixed;
@@ -129,14 +132,11 @@ const NavList = styled.ul`
 	height: ${({ height }) => height};
 	width: ${({ width }) => width};
 	float: ${({ float }) => float};
-	@media (max-width: 1024px) {
-		font-size: calc(15px + 1vw);
-	}
 	@media (max-width: 700px) {
 		flex-direction: column;
 		justify-content: inherit;
 		gap: 0;
-		li:nth-child(1) {
+		li:nth-child(1) { //logo
 			display: none;
 		}
 		li {
