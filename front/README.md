@@ -24,7 +24,7 @@ Sportsee is an application for monitoring your physical activity. 12th project o
 
 2. Install the dependencies with `npm install` or `yarn install`
 
-3. From home directory, open the terminal and run: `cd front/` then run `npm start` or `yarn start` (starts the app), App should start on port 3000.
+3. From home directory, open the terminal and run: `cd front/` then run `npm start` or `yarn start` (starts the app), App should start on port 3000 ([http://localhost:3000](http://localhost:3000)).
 
 4. for using api data: 
     * From home directory, open a terminal and run: `cd back`
