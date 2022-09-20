@@ -26,7 +26,7 @@ Sportsee is an application for monitoring your physical activity. 12th project o
 
 3 - From home directory, open the terminal and run: `cd front/` then run `npm start` or `yarn start` (starts the app), App should start on port 3000.
 
-4. for using api data: 
+4 - for using api data: 
     * From home directory, open a terminal and run: `cd back`
     * Open the server with `npm run dev` or `yarn dev`, backend should be runnning on port 3000
     * Go to "front/pages/Stats.jsx" and verify that "use_mocked_data" variable line 26 is on false (pass it to true if you want to use mocked data)
