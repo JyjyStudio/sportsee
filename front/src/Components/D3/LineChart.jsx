@@ -55,16 +55,16 @@ export default function LinearChart({ data, svgHeight }) {
 		// X axis
 		const x_Scale = d3
 			.scaleLinear()
-			.domain([1, 7])
+			.domain([0, 6])
 			.range([margin.left, graphWidth + margin.right])
 
-		const tickLabels = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
+		const tickLabels = data.map(d => d.day)
 		const x_Axis = d3
 			.axisBottom(x_Scale)
 			.tickSize(0)
 			.tickPadding(10)
 			.ticks(7)
-			.tickFormat((d, i) => tickLabels[i])
+			.tickFormat((d, i) => tickLabels[i].substring(0,1))
 		const y_Scale = d3
 			.scaleLinear()
 			.domain([0, d3.max(data, (d) => d.sessionLength)])
@@ -81,7 +81,7 @@ export default function LinearChart({ data, svgHeight }) {
 		//path
 		const line = d3
 			.line()
-			.x((d) => x_Scale(d.day))
+			.x((d) => x_Scale(tickLabels.indexOf(d.day)))
 			.y((d) => y_Scale(d.sessionLength))
 			.curve(d3.curveMonotoneX)
 
@@ -106,7 +106,7 @@ export default function LinearChart({ data, svgHeight }) {
 			let group = svg.append('g').attr('id', 'day' + index + 'average')
 			group
 				.append('rect')
-				.attr('x', x_Scale(index + 1))
+				.attr('x', x_Scale(index))
 				.attr('y', 0)
 				.attr('width', '100%')
 				.attr('height', graphHeight + margin.top + margin.bottom)
@@ -114,7 +114,7 @@ export default function LinearChart({ data, svgHeight }) {
 				.attr('opacity', '0')
 			group
 				.append('rect')
-				.attr('x', displayTooltip(index + 1))
+				.attr('x', displayTooltip(index))
 				.attr('y', y_Scale(data[index].sessionLength) - 25)
 				.attr('width', 50)
 				.attr('height', 20)
@@ -122,7 +122,7 @@ export default function LinearChart({ data, svgHeight }) {
 				.attr('opacity', '0')
 			group
 				.append('text')
-				.attr('x', displayTooltip(index + 1) + 25)
+				.attr('x', displayTooltip(index) + 25)
 				.attr('y', y_Scale(data[index].sessionLength) - 10)
 				.style('text-anchor', 'middle')
 				.attr('fill', 'black')
@@ -131,13 +131,21 @@ export default function LinearChart({ data, svgHeight }) {
 			group
 				.append('circle')
 				.attr('fill', '#fff')
-				.attr('cx', x_Scale(index + 1))
+				.attr('cx', x_Scale(index))
 				.attr('cy', y_Scale(data[index].sessionLength))
 				.attr('r', 4)
 				.attr('opacity', '0')
+			group
+				.append('circle')
+				.classed('low-opacity-circle', true)
+				.attr('fill', '#fff')
+				.attr('cx', x_Scale(index))
+				.attr('cy', y_Scale(data[index].sessionLength))
+				.attr('r', 10)
+				.attr('opacity', '0')
 			// hover area
 			svg.append('rect')
-				.attr('x', x_Scale(index + 1))
+				.attr('x', x_Scale(index))
 				.attr('y', 0)
 				.attr('width', graphWidth / 7)
 				.attr('height', 300)
@@ -148,6 +156,9 @@ export default function LinearChart({ data, svgHeight }) {
 					d3.selectAll(`#day${index}average > *`)
 						.transition()
 						.attr('opacity', '1')
+					d3.selectAll(`#day${index}average > .low-opacity-circle`)
+						.transition()
+						.attr('opacity', '.3')
 				})
 				.on('mouseout', function () {
 					d3.selectAll(`#day${index}average > *`)
@@ -167,7 +178,12 @@ export default function LinearChart({ data, svgHeight }) {
 			ref={lineContainerRef} style={{height: svgHeight}}></div>
 }
 
+const data_shape_prop = {
+	day: PropTypes.string.isRequired, 
+	sessionLength: PropTypes.number.isRequired,
+}
+
 LinearChart.propTypes = {
-	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+	data: PropTypes.arrayOf(PropTypes.shape(data_shape_prop)).isRequired,
 	svgHeight: PropTypes.number,
 }
