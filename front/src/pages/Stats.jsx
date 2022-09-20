@@ -41,23 +41,22 @@ export default function Stats() {
 	// all data, mocked or fetched
 	const USER_MAIN_DATA = use_mocked_data
 		? mocked_data.USER_MAIN_DATA.filter((data) => data.id === id)[0]
-		: api_data?.USER_MAIN_DATA?.data
-
+		: api_data?.USER_MAIN_DATA.data
 	const keyData = USER_MAIN_DATA?.keyData
 	const score = USER_MAIN_DATA?.todayScore || USER_MAIN_DATA?.score
 
 	const USER_AVERAGE_SESSIONS = use_mocked_data
 		? mocked_data.USER_AVERAGE_SESSIONS.filter((data) => data.userId === id)[0]
-		: api_data?.USER_AVERAGE_SESSIONS?.data
+		: api_data?.USER_AVERAGE_SESSIONS.data
 	const averageSessions = USER_AVERAGE_SESSIONS?.sessions
 
 	const USER_PERFORMANCE = use_mocked_data
 		? mocked_data.USER_PERFORMANCE.filter((data) => data.userId === id)[0]
-		: api_data?.USER_PERFORMANCE?.data
+		: api_data?.USER_PERFORMANCE.data
 
 	const USER_ACTIVITY = use_mocked_data
 		? mocked_data.USER_ACTIVITY.filter((data) => data.userId === id)[0]
-		: api_data?.USER_ACTIVITY?.data
+		: api_data?.USER_ACTIVITY.data
 	const sessions = USER_ACTIVITY?.sessions
 	
 	// if data loading
@@ -86,7 +85,6 @@ export default function Stats() {
 			</GridSection>
 		</Wrapper>
 	)
-	
 }
 
 const Wrapper = styled.main`
