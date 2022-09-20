@@ -61,7 +61,14 @@ const DataContent = styled.div`
 const DataLabel = styled.div`
 	color: #74798C;
 `
+
+const data_shape_prop = {
+	calorieCount: PropTypes.number.isRequired, 
+	carbohydrateCount: PropTypes.number.isRequired,
+	lipidCount: PropTypes.number.isRequired,
+	proteinCount: PropTypes.number.isRequired
+}
 UserData.propTypes = {
-	userData : PropTypes.object.isRequired,
+	userData : PropTypes.shape(data_shape_prop).isRequired,
 	margin : PropTypes.string
 }
