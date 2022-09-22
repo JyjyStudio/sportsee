@@ -8,7 +8,7 @@ import axios from 'axios'
  * @returns {Object} the data, error and loading state in an object 
  * @function
  */
-export default function useAxios([...endpoints]) {
+export default function useAxios(endpoints) {
 	const [data, setData] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
